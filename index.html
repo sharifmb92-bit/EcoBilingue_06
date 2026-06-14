@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Eco Nativo Pro - Control de Bucle</title>
+    <title>Eco Nativo Pro - Baleares</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,23 +11,25 @@
     <style>
         :root {
             --bg-idle: #0a0a0a;
-            --color-driver: #fbbf24; 
-            --color-client: #38bdf8; 
+            --color-driver: #fbbf24; /* ÁMBAR */
+            --color-client: #38bdf8; /* AZUL */
             --btn-start: #38bdf8;
             --btn-stop: #ef4444; 
+            --btn-auto: #22c55e;
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        * { box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { 
             background-color: var(--bg-idle); color: white; margin: 0; 
             display: flex; flex-direction: column; 
             height: 100vh; height: 100dvh; overflow: hidden;
-            transition: background-color 0.4s ease;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        body.mode-driver { background-color: #2b1d00; } 
-        body.mode-client { background-color: #001a35; } 
+        /* 3 COLORES DE SEGURIDAD PARA EL HABITÁCULO */
+        body.mode-driver { background-color: #2b1d00; } /* ÁMBAR */
+        body.mode-client { background-color: #001a35; } /* AZUL */
         body.mode-idle { background-color: var(--bg-idle); }
 
         header { 
@@ -37,22 +39,24 @@
         }
 
         .medbasha-sign { font-size: 8px; letter-spacing: 2px; opacity: 0.4; font-weight: bold; }
-        .toponym-shield { font-size: 9px; color: #22c55e; font-weight: 800; }
+        .toponym-shield { font-size: 9px; color: #22c55e; font-weight: 800; letter-spacing: 1px; }
 
         .display-area {
             flex: 1; display: flex; flex-direction: column; justify-content: center; 
             padding: 20px; text-align: center;
         }
-        #main-display { font-size: 42px; font-weight: 900; line-height: 1.1; }
-        #sub-display { font-size: 18px; margin-top: 20px; min-height: 1.5em; color: #94a3b8; }
+        #main-display { font-size: 42px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; }
+        #sub-display { font-size: 18px; margin-top: 20px; font-weight: 500; min-height: 1.5em; color: #94a3b8; }
 
+        /* FRASES RÁPIDAS CATEGORIZADAS */
         .quick-actions-container {
             padding: 5px 0; background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.1);
         }
+        .category-label { font-size: 9px; font-weight: 900; color: #64748b; margin-left: 20px; text-transform: uppercase; }
         .quick-actions { display: flex; gap: 8px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; }
         .q-btn {
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-            color: white; padding: 12px 18px; border-radius: 12px; white-space: nowrap; font-size: 13px; font-weight: 700;
+            color: white; padding: 14px 18px; border-radius: 12px; white-space: nowrap; font-size: 13px; font-weight: 700;
         }
 
         .control-panel {
@@ -68,11 +72,11 @@
         .l-flag.active { filter: grayscale(0); transform: scale(1.2); border-color: var(--color-client); }
         
         .btn-auto-detect {
-            background: #22c55e; color: white; border: none; padding: 8px 14px;
+            background: var(--btn-auto); color: white; border: none; padding: 8px 14px;
             border-radius: 10px; font-size: 10px; font-weight: 900; cursor: pointer;
             text-transform: uppercase;
         }
-        .btn-auto-detect.active { box-shadow: 0 0 20px #22c55e; border: 2px solid white; }
+        .btn-auto-detect.active { box-shadow: 0 0 20px var(--btn-auto); border: 2px solid white; }
 
         .master-btn {
             width: 100%; padding: 22px; border-radius: 18px; border: none;
@@ -91,19 +95,24 @@
     <header>
         <div>
             <div style="font-weight: 900; font-size: 12px;">ECO NATIVO <span style="color:var(--color-client)">PRO</span></div>
-            <div class="toponym-shield">🛡️ ANTI-LOOP ACTIVATED</div>
+            <div class="toponym-shield">🛡️ BALEARIC IDENTITY PROTECTED</div>
         </div>
         <div class="medbasha-sign">MEDBASHA</div>
     </header>
 
     <div class="display-area">
         <div id="main-display">REPOSO</div>
-        <div id="sub-display">Fidelidad IA activa</div>
+        <div id="sub-display">Inicie el asistente para el trayecto</div>
     </div>
 
     <div class="quick-actions-container">
+        <div class="category-label">Bienvenida e Inicio</div>
         <div class="quick-actions">
             <button class="q-btn" onclick="forcePhrase('Hola, buenos días. ¿A qué hotel o urbanización vamos?')">👋 Bienvenida</button>
+            <button class="q-btn" onclick="forcePhrase('¿Me puede confirmar el destino o dirección?')">📍 Destino?</button>
+        </div>
+        <div class="category-label" style="margin-top:5px">Ruta y Pago</div>
+        <div class="quick-actions">
             <button class="q-btn" onclick="forcePhrase('Hay algo de tráfico en la carretera principal, tardaremos unos minutos más')">🚗 Tráfico</button>
             <button class="q-btn" onclick="forcePhrase('¿Le parece bien la temperatura del coche?')">🌡️ Temp.</button>
             <button class="q-btn" onclick="forcePhrase('¿Desea pagar con tarjeta o efectivo?')">💳 Pago</button>
@@ -127,11 +136,13 @@
     <script>
         let isRunning = false;
         let isAutoDetect = false;
-        let isProcessing = false; // BLOQUEO PARA EVITAR BUCLES
+        let isProcessing = false; 
         let turn = 'driver'; 
         let targetLang = 'en';
         let autoStopTimer = null;
         const AUTO_STOP_TIME = 180000; // 3 MINUTOS
+
+        const toponyms = ["Menorca", "Mahón", "Maó", "Ciutadella", "Binibeca", "Cala", "Son Bou", "Ferreries", "Alaior", "Fornells", "Mercadal", "Galdana", "Turqueta", "Macarella"];
 
         const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         rec.continuous = false;
@@ -171,7 +182,7 @@
             rec.stop();
             window.speechSynthesis.cancel();
             clearTimeout(autoStopTimer);
-            updateUI("SISTEMA APAGADO", "Presione Activar", "idle");
+            updateUI("SISTEMA APAGADO", "Micro desactivado", "idle");
         }
 
         function resetAutoStopTimer() {
@@ -181,39 +192,26 @@
 
         async function startCycle() {
             if(!isRunning || isProcessing || window.speechSynthesis.speaking) return;
-
             const isDriver = turn === 'driver';
             rec.lang = isDriver ? 'es-ES' : (isAutoDetect ? 'en-GB' : getFullCode(targetLang));
-            
-            updateUI(
-                isDriver ? "CONDUCTOR..." : "PASAJERO...", 
-                isDriver ? "Escuchando..." : "Listening...",
-                isDriver ? "driver" : "client"
-            );
-            
+            updateUI(isDriver ? "CONDUCTOR..." : "PASAJERO...", isDriver ? "Le escucho (Español)" : "Precision mode", isDriver ? "driver" : "client");
             try { rec.start(); } catch(e) {}
         }
 
         rec.onresult = async (event) => {
             resetAutoStopTimer();
-            let interim = '';
-            let final = '';
-
+            let interim = ''; let final = '';
             for (let i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) final += event.results[i][0].transcript;
                 else interim += event.results[i][0].transcript;
             }
-
             if (interim !== '') document.getElementById('sub-display').innerText = interim;
 
             if (final !== '' && !isProcessing) {
                 const result = event.results[0][0];
-                
-                // FILTRO DE CONFIANZA ALTO PARA EVITAR AUTO-RESPUESTAS
                 if (result.confidence < 0.75) return; 
 
-                isProcessing = true; // BLOQUEAR MICRO
-                rec.stop();
+                isProcessing = true; rec.stop();
 
                 if (turn === 'client' && isAutoDetect) {
                     const det = await detectLanguageIA(final);
@@ -225,10 +223,9 @@
                 if (translated) {
                     updateUI(translated, final, turn === 'driver' ? "client" : "driver");
                     speak(translated, turn === 'driver' ? getFullCode(targetLang) : 'es-ES', () => {
-                        // AL TERMINAR DE HABLAR:
                         isProcessing = false;
                         turn = (turn === 'driver') ? 'client' : 'driver';
-                        setTimeout(startCycle, 1000); // PAUSA DE SEGURIDAD
+                        setTimeout(startCycle, 1000); 
                     });
                 } else {
                     isProcessing = false;
@@ -258,21 +255,18 @@
             window.speechSynthesis.cancel();
             const u = new SpeechSynthesisUtterance(text);
             u.lang = lang; u.rate = 0.9;
-            u.onend = () => { setTimeout(onEnd, 500); }; // Delay extra post-voz
+            u.onend = () => { setTimeout(onEnd, 500); };
             window.speechSynthesis.speak(u);
         }
 
         async function forcePhrase(spanishText) {
             if(!isRunning) toggleSystem();
             if(isProcessing) return;
-            isProcessing = true;
-            rec.stop();
+            isProcessing = true; rec.stop();
             const translatedText = await translateIA(spanishText, 'es', targetLang);
             updateUI(translatedText, spanishText, "client");
             speak(translatedText, getFullCode(targetLang), () => {
-                isProcessing = false;
-                turn = 'client';
-                setTimeout(startCycle, 1000);
+                isProcessing = false; turn = 'client'; setTimeout(startCycle, 1000);
             });
         }
 
@@ -291,15 +285,15 @@
 
         function getFullCode(l) { return { 'en': 'en-GB', 'fr': 'fr-FR', 'de': 'de-DE', 'it': 'it-IT' }[l]; }
         
-        // REINICIO SEGURO DEL MICRÓFONO
-        rec.onend = () => { 
-            if(isRunning && !isProcessing && !window.speechSynthesis.speaking) {
-                setTimeout(startCycle, 300);
-            }
-        };
-
+        rec.onend = () => { if(isRunning && !isProcessing && !window.speechSynthesis.speaking) setTimeout(startCycle, 300); };
         rec.onerror = (e) => { if(isRunning && e.error !== 'no-speech') setTimeout(startCycle, 1000); };
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+
+        // REGISTRO PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => console.log('SW OK')).catch(err => console.log('SW Error', err));
+            });
+        }
     </script>
 </body>
 </html>
